@@ -5,8 +5,8 @@ import { TodoDto } from '../../dto';
 @Injectable()
 export class TodoMapperService {
 
-  public modelToDto({ id, title, completed }: Todo): TodoDto {
-    return new TodoDto({ id, title, completed });
+  public modelToDto(todo: Todo): TodoDto {
+    return new TodoDto(todo);
   }
 
 }

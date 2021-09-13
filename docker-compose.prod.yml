@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: todo-api
+    image: test-todo:latest
+    env_file:
+      - .env
+      - .env.production
+      - .env.production.local
+    networks:
+      - nestjs-todo
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+
+  database:
+    container_name: todo-db
+    image: postgres:latest
+    networks:
+      - nestjs-todo
+    volumes:
+      - nestjs-todo
+    environment:
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - nestjs-todo
+
+networks:
+  nestjs-todo:
+
+volumes:
+  nestjs-todo:

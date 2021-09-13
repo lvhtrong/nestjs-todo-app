@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as path from 'path';
+import { Todo } from './todo/entities';
 import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      autoLoadEntities: true,
-      synchronize: true,
-      database: path.resolve(__dirname, '..', 'db.sqlite')
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: process.env.DB_TYPE as any,
+        url: `${process.env.DB_URI}/${process.env.DB_NAME}`,
+        entities: [Todo],
+      }),
     }),
-    TodoModule
-  ]
+    TodoModule,
+  ],
 })
 export class AppModule {}

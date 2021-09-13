@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: todo-api
+    image: node:14-alpine3.14
+    command: [sh, -c, "npm run start:dev"]
+    env_file:
+      - .env
+      - .env.development
+    environment:
+      - NODE_ENV=development
+    networks:
+      - nestjs-todo
+    ports:
+      - 3000:3000
+    working_dir: /usr/src/app
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - database
+
+  database:
+    container_name: todo-db
+    image: postgres:latest
+    networks:
+      - nestjs-todo
+    volumes:
+      - nestjs-todo
+    environment:
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - nestjs-todo
+
+networks:
+  nestjs-todo:
+
+volumes:
+  nestjs-todo:
