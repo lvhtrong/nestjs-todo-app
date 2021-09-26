@@ -8,7 +8,7 @@ FROM node:14.17-alpine3.14
 
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
-COPY package*.json .env* ./
+COPY package*.json ormconfig.* .env* ./
 RUN npm i --only=prod --ignore-scripts
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/migrations ./migrations
