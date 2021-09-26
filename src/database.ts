@@ -12,7 +12,7 @@ const createDatabaseIfNotExist = async (databaseName: string) => {
     type: process.env.DB_TYPE as any,
     url: process.env.DB_URI,
     ssl:
-      process.env.DB_SSLMODE === 'require'
+      process.env.NODE_ENV === 'production'
         ? {
             rejectUnauthorized: false,
           }
@@ -37,10 +37,12 @@ const createDatabaseIfNotExist = async (databaseName: string) => {
 
 export async function initDatabase(): Promise<void> {
   // Constants
-  const databaseNeedToCreate = process.env.DB_NAME;
-  await createDatabaseIfNotExist(databaseNeedToCreate).then(() =>
-    connection.close(),
-  );
+  if (process.env.DB_AUTO_CREATED) {
+    const databaseNeedToCreate = process.env.DB_NAME;
+    await createDatabaseIfNotExist(databaseNeedToCreate).then(() =>
+      connection.close(),
+    );
+  }
 
   // TODO: run migration
 }
