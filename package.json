@@ -19,7 +19,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:run": "node ./node_modules/typeorm/cli.js --config ./dist/ormconfig.prod.js migration:run"
+    "migration:run": "node ./node_modules/typeorm/cli.js --config ./dist/ormconfig.prod.js migration:run",
+    "prod:build": "docker build -t web .",
+    "prod:push": "heroku container:push web --app learning-nestjs-todo-app",
+    "prod:deploy": "heroku container:release web --app learning-nestjs-todo-app",
+    "prod:log": "heroku logs --tail --app learning-nestjs-todo-app"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
