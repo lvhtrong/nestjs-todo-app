@@ -10,6 +10,12 @@ import { TodoModule } from './todo/todo.module';
         type: process.env.DB_TYPE as any,
         url: `${process.env.DB_URI}/${process.env.DB_NAME}`,
         entities: [Todo],
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? {
+                rejectUnauthorized: false,
+              }
+            : false,
       }),
     }),
     TodoModule,
