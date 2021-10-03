@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateTodoCommand } from 'src/todo/commands';
 import { Repository } from 'typeorm';
 import { isNullOrUndefined } from 'util';
 import { AddTodoDto, EditTodoDto, TodoDto } from '../../dto';
@@ -12,6 +14,7 @@ export class TodoService {
     @InjectRepository(Todo)
     private readonly todoRepository: Repository<Todo>,
     private readonly todoMapper: TodoMapperService,
+    private readonly commandBus: CommandBus,
   ) {}
 
   public async findAll(): Promise<TodoDto[]> {
@@ -25,10 +28,8 @@ export class TodoService {
     return this.todoMapper.modelToDto(todo);
   }
 
-  public async add({ title }: AddTodoDto): Promise<TodoDto> {
-    let todo = new Todo(title);
-    todo = await this.todoRepository.save(todo);
-    return this.todoMapper.modelToDto(todo);
+  public async add(dto: AddTodoDto): Promise<TodoDto> {
+    return await this.commandBus.execute(new CreateTodoCommand(dto));
   }
 
   public async edit(
