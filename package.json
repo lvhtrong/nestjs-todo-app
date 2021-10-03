@@ -22,7 +22,8 @@
     "migration:run": "node ./node_modules/typeorm/cli.js --config ./dist/ormconfig.prod.js migration:run",
     "prod:build": "docker build -t web .",
     "prod:push": "heroku container:push web --app learning-nestjs-todo-app",
-    "prod:deploy": "heroku container:release web --app learning-nestjs-todo-app",
+    "prod:release": "heroku container:release web --app learning-nestjs-todo-app",
+    "prod:deploy": "npm run prod:build && npm run prod:push && npm run prod:release",
     "prod:log": "heroku logs --tail --app learning-nestjs-todo-app"
   },
   "dependencies": {
