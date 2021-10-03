@@ -27,9 +27,39 @@ services:
       - POSTGRES_PASSWORD=123456
 
   adminer:
+    container_name: todo-db-ui
     image: adminer
     ports:
       - 8070:8080
 
+  elasticsearch:
+    container_name: todo-search
+    image: elasticsearch:7.13.1
+    volumes:
+      - nestjs-todo-search:/usr/share/elasticsearch/data
+    environment:
+      - cluster.name=docker
+      - discovery.type=single-node
+      - node.name=node-0
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
+    ports:
+      - 9210:9200
+      - 9310:9300
+    ulimits:
+      memlock:
+        soft: 262144
+        hard: 262144
+
+  elasticsearch-ui:
+    container_name: todo-search-ui
+    image: kibana:7.14.1
+    ports:
+      - 5601:5601
+
 volumes:
   nestjs-todo:
+  nestjs-todo-search:

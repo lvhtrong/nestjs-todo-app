@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CreateTodoCommandHandler } from './commands';
+import {
+  CreateTodoCommandHandler,
+  CreateTodoEsCommandHandler,
+} from './commands';
 import { TodoController } from './controllers';
 import { Todo } from './entities';
+import { TodoSagas } from './sagas';
 import { TodoMapperService, TodoService } from './services';
 
-const handlers = [CreateTodoCommandHandler];
+const handlers = [CreateTodoCommandHandler, CreateTodoEsCommandHandler];
+const sagas = [TodoSagas];
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Todo]), CqrsModule],
-  providers: [TodoService, TodoMapperService, ...handlers],
+  imports: [TypeOrmModule.forFeature([Todo])],
+  providers: [TodoService, TodoMapperService, ...handlers, ...sagas],
   controllers: [TodoController],
 })
 export class TodoModule {}
