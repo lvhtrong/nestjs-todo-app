@@ -4,11 +4,9 @@ import { Connection, createConnection, getManager } from 'typeorm';
  * MAIN
  */
 
-let connection: Connection = null;
-
 const createDatabaseIfNotExist = async (databaseName: string) => {
   // Establish the connection
-  connection = await createConnection({
+  const connection = await createConnection({
     type: process.env.DB_TYPE as any,
     url: process.env.DB_URI,
     ssl:
@@ -33,16 +31,60 @@ const createDatabaseIfNotExist = async (databaseName: string) => {
     await entityManager.query(`CREATE DATABASE "${databaseName}";`);
     console.log(`Database ${databaseName} is created!`);
   }
+
+  connection.close();
+};
+
+const runMigrations = async () => {
+  if (!process.env.DB_AUTO_MIGRATION_RUN) {
+    console.warn(
+      `skip migrations`,
+    );
+    return;
+  }
+
+  let connection: Connection;
+
+  try {
+    connection = await createConnection({
+      name: 'migration',
+      type: process.env.DB_TYPE as any,
+      url: `${process.env.DB_URI}/${process.env.DB_NAME}`,
+      ssl:
+        process.env.NODE_ENV === 'production'
+          ? {
+              rejectUnauthorized: false,
+            }
+          : false,
+      migrations: ['dist/migrations/*.js'],
+    });
+
+    const pendingMigrations = await connection.showMigrations();
+    if (pendingMigrations) {
+      console.log('Migrations running!!!');
+
+      await connection.runMigrations({
+        transaction: 'none',
+      });
+
+      console.log('Migrations finished!!!');
+    } else {
+      console.log('No pending migrations!!!');
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    connection.close();
+  }
 };
 
 export async function initDatabase(): Promise<void> {
-  // Constants
+  // create database
   if (process.env.DB_AUTO_CREATED) {
     const databaseNeedToCreate = process.env.DB_NAME;
-    await createDatabaseIfNotExist(databaseNeedToCreate).then(() =>
-      connection.close(),
-    );
+    await createDatabaseIfNotExist(databaseNeedToCreate);
   }
 
-  // TODO: run migration
+  // run migration
+  await runMigrations();
 }
