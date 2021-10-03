@@ -21,6 +21,8 @@ services:
   database:
     container_name: todo-db
     image: postgres:latest
+    volumes:
+      - nestjs-todo:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=123456
 
@@ -28,3 +30,6 @@ services:
     image: adminer
     ports:
       - 8070:8080
+
+volumes:
+  nestjs-todo:

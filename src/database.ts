@@ -32,14 +32,12 @@ const createDatabaseIfNotExist = async (databaseName: string) => {
     console.log(`Database ${databaseName} is created!`);
   }
 
-  connection.close();
+  await connection.close();
 };
 
 const runMigrations = async () => {
   if (!process.env.DB_AUTO_MIGRATION_RUN) {
-    console.warn(
-      `skip migrations`,
-    );
+    console.warn('Skip migrations');
     return;
   }
 
@@ -47,7 +45,6 @@ const runMigrations = async () => {
 
   try {
     connection = await createConnection({
-      name: 'migration',
       type: process.env.DB_TYPE as any,
       url: `${process.env.DB_URI}/${process.env.DB_NAME}`,
       ssl:
@@ -74,7 +71,7 @@ const runMigrations = async () => {
   } catch (error) {
     console.error(error);
   } finally {
-    connection.close();
+    await connection.close();
   }
 };
 
