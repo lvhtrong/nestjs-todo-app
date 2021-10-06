@@ -56,9 +56,9 @@ services:
 
   elasticsearch-ui:
     container_name: todo-search-ui
-    image: kibana:7.14.1
+    image: cars10/elasticvue
     ports:
-      - 5601:5601
+      - 8020:8080
 
 volumes:
   nestjs-todo:
