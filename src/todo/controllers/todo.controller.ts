@@ -1,23 +1,23 @@
-import { TodoService } from './../services/todo/todo.service';
-import { TodoDto, AddTodoDto, EditTodoDto } from './../dto';
-
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Put,
-  Body,
-  Delete,
+  Query,
 } from '@nestjs/common';
+import { AddTodoDto, EditTodoDto, GetTodoListDto, TodoDto } from './../dto';
+import { TodoService } from './../services/todo/todo.service';
 
 @Controller('todos')
 export class TodoController {
   public constructor(private readonly todoService: TodoService) {}
 
   @Get()
-  public findAll(): Promise<TodoDto[]> {
-    return this.todoService.findAll();
+  public findAll(@Query() params: GetTodoListDto): Promise<TodoDto[]> {
+    return this.todoService.findAll(params);
   }
 
   @Get(':id')

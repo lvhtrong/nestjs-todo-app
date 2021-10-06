@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTodoCommand } from 'src/todo/commands';
+import { SearchTodoQuery } from 'src/todo/queries';
 import { Repository } from 'typeorm';
 import { isNullOrUndefined } from 'util';
-import { AddTodoDto, EditTodoDto, TodoDto } from '../../dto';
+import { AddTodoDto, EditTodoDto, GetTodoListDto, TodoDto } from '../../dto';
 import { Todo } from '../../entities';
 import { TodoMapperService } from '../todo-mapper/todo-mapper.service';
 
@@ -14,11 +15,12 @@ export class TodoService {
     @InjectRepository(Todo)
     private readonly todoRepository: Repository<Todo>,
     private readonly todoMapper: TodoMapperService,
+    private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
   ) {}
 
-  public async findAll(): Promise<TodoDto[]> {
-    const todos = await this.todoRepository.find();
+  public async findAll(dto: GetTodoListDto): Promise<TodoDto[]> {
+    const todos = await this.queryBus.execute(new SearchTodoQuery(dto));
     return todos.map(this.todoMapper.modelToDto);
   }
 

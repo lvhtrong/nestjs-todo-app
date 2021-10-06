@@ -6,10 +6,15 @@ import {
 } from './commands';
 import { TodoController } from './controllers';
 import { Todo } from './entities';
+import { SearchTodoQueryHandler } from './queries';
 import { TodoSagas } from './sagas';
 import { TodoMapperService, TodoService } from './services';
 
-const handlers = [CreateTodoCommandHandler, CreateTodoEsCommandHandler];
+const handlers = [
+  CreateTodoCommandHandler,
+  CreateTodoEsCommandHandler,
+  SearchTodoQueryHandler,
+];
 const sagas = [TodoSagas];
 
 @Module({
