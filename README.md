@@ -1,40 +1,35 @@
-# nestjs-todo-app
+# learning-nestjs-todo-app
 
 ## Description
 
-Simple ToDo application using [NestJS](https://github.com/nestjs/nest).
+Simple ToDo application.
+
+## Techniques
+
+- [NestJS](https://github.com/nestjs/nest)
+- PostgreSQL
+- Elasticsearch
+- Docker
+
+## Prerequisite
+
+Make sure you have already installed npm, Docker and docker-compose.
 
 ## Installation
 
 ```bash
-$ npm install
+$ npm i
 ```
 
 ## Running the app
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
+You could run the app using the following command line:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ docker-compose up -d
 ```
+
+Then, the api will be available with [this url](http://localhost:3010).
 
 ## License
 
