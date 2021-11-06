@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateTodoCommand } from 'src/todo/commands';
-import { SearchTodoQuery } from 'src/todo/queries';
+import { CreateTodoCommand } from 'src/features/todo/commands';
+import { SearchTodoQuery } from 'src/features/todo/queries';
 import { Repository } from 'typeorm';
 import { isNullOrUndefined } from 'util';
 import { AddTodoDto, EditTodoDto, GetTodoListDto, TodoDto } from '../../dto';

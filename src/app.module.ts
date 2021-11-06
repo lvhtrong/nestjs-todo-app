@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SharedModule } from './shared/shared.module';
-import { Todo } from './todo/entities';
-import { TodoModule } from './todo/todo.module';
+import { Todo } from './features/todo/entities';
+import { TodoModule } from './features/todo/todo.module';
 
 const ormModule = TypeOrmModule.forRootAsync({
   useFactory: () => ({

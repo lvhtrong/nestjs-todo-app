@@ -1,7 +1,7 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Todo } from 'src/todo/entities';
-import { TodoCreatedEvent } from 'src/todo/events';
+import { Todo } from 'src/features/todo/entities';
+import { TodoCreatedEvent } from 'src/features/todo/events';
 import { Repository } from 'typeorm';
 import { CreateTodoCommand } from './create-todo.command';
 

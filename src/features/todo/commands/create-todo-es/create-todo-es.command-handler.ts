@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Todo } from 'src/todo/entities';
+import { Todo } from 'src/features/todo/entities';
 import { Repository } from 'typeorm';
 import { CreateTodoEsCommand } from './create-todo-es.command';
 

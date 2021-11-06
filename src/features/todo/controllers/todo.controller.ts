@@ -8,8 +8,8 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { AddTodoDto, EditTodoDto, GetTodoListDto, TodoDto } from './../dto';
-import { TodoService } from './../services/todo/todo.service';
+import { AddTodoDto, EditTodoDto, GetTodoListDto, TodoDto } from '../dto';
+import { TodoService } from '../services/todo/todo.service';
 
 @Controller('todos')
 export class TodoController {

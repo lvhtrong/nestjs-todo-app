@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TodoMapperService } from './todo-mapper.service';
-import { Todo } from './../../entities';
-import { TodoDto } from './../../dto';
+import { Todo } from '../../entities';
+import { TodoDto } from '../../dto';
 
 describe('TodoMapperService', () => {
   let service: TodoMapperService;
