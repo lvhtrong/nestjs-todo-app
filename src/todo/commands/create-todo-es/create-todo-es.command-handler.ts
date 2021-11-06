@@ -15,16 +15,11 @@ export class CreateTodoEsCommandHandler
   ) {}
 
   async execute(command: CreateTodoEsCommand): Promise<any> {
-    console.log('111');
-
     const todo = await this.todoRepository.findOne(command.todoId);
-
-    const esResponse = await this.elasticsearchService.create({
+    await this.elasticsearchService.create({
       index: 'todo',
       id: todo.id,
       body: todo,
     });
-
-    console.log('222', esResponse);
   }
 }
