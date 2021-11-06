@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ES_DOCUMENT_TYPE } from 'src/shared';
 import {
   CreateTodoCommandHandler,
   CreateTodoEsCommandHandler,
@@ -17,9 +18,22 @@ const handlers = [
 ];
 const sagas = [TodoSagas];
 
+const providers: Provider[] = [
+  {
+    provide: ES_DOCUMENT_TYPE,
+    useValue: 'todo',
+  },
+];
+
 @Module({
   imports: [TypeOrmModule.forFeature([Todo])],
-  providers: [TodoService, TodoMapperService, ...handlers, ...sagas],
+  providers: [
+    TodoService,
+    TodoMapperService,
+    ...handlers,
+    ...sagas,
+    ...providers,
+  ],
   controllers: [TodoController],
 })
 export class TodoModule {}
