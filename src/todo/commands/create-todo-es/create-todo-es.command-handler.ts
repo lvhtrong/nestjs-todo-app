@@ -19,7 +19,10 @@ export class CreateTodoEsCommandHandler
     await this.elasticsearchService.create({
       index: 'todo',
       id: todo.id,
-      body: todo,
+      body: {
+        todo,
+        type: 'todo',
+      },
     });
   }
 }

@@ -11,9 +11,19 @@ export class SearchTodoQueryHandler
   async execute(query: SearchTodoQuery): Promise<Todo[]> {
     const response = await this.elasticsearchService.search({
       index: 'todo',
-      body: {},
+      body: {
+        query: {
+          bool: {
+            must: {
+              term: {
+                type: 'todo',
+              },
+            },
+          },
+        },
+      },
     });
     const items: any[] = response.body.hits.hits;
-    return items.map(item => item._source);
+    return items.map(item => item._source.todo);
   }
 }
